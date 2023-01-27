@@ -6,8 +6,8 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
-    .setTitle('Nest prisma template')
-    .setDescription('Template app for nest with prisma')
+    .setTitle('Nest GINIS proxy')
+    .setDescription('REST service for common GINIS tasks')
     .setVersion('1.0')
     .setContact(
       'Bratislava Inovations',
@@ -15,7 +15,7 @@ async function bootstrap() {
       'inovacie@bratislava.sk',
     )
     .addServer('https://localhost:' + port + '/')
-    .addServer('https://nest-prisma-template.dev.bratislava.sk/')
+    .addServer('https://nest-ginis-proxy.dev.bratislava.sk/')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

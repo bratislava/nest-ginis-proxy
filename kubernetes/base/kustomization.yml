@@ -3,22 +3,22 @@ resources:
   - service-app.yml
   - ingress.yml
   # Comment-out these lines if no database is used
-  - stateful-set.yml
-  - service-database.yml
+  # - stateful-set.yml
+  # - service-database.yml
 configurations:
   - configuration.yml
 
 # Add composite env vars from secrets
-patches:
-  - target:
-      name: app
-      kind: Deployment
-    patch: |-
-      - op: add
-        path: /spec/template/spec/containers/0/env
-        value:
-        - name: DATABASE_URL
-          value: postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@${BUILD_REPOSITORY_NAME}-database:5432/$(POSTGRES_DB)?schema=public
+# patches:
+#   - target:
+#       name: app
+#       kind: Deployment
+#     patch: |-
+#       - op: add
+#         path: /spec/template/spec/containers/0/env
+#         value:
+#         - name: DATABASE_URL
+#           value: postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@${BUILD_REPOSITORY_NAME}-database:5432/$(POSTGRES_DB)?schema=public
 
 
 # Keep as is

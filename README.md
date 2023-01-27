@@ -1,6 +1,6 @@
-# nest-prisma-template
+# Nest Ginis Proxy
 
-Starting template for nest-prisma development under the city of Bratislava.
+REST service for common GINIS tasks
 
 # Quick run
 
@@ -11,41 +11,21 @@ docker-compose up --build
 
 # Local installation
 
-- Run npm installation for dependencies
-
 ```bash
-npm install
-```
-
-- For Prisma, it comes in handy to have Prisma cli. Check if it is working on your pc:
-
-```bash
-npx prisma
-```
-
-- Check the `.env` file for your correct local database connection configuration. It looks like this:
-
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/mydatabase?schema=public"`
-```
-
-If you have issues connecting to your Postgres, maybe you need to set timeout `connect_timeout`. Sometimes macs have problems with that:
-
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/?connect_timeout=30&schema=public"
+yarn
 ```
 
 ## Running the app
 
 ```bash
 # development
-npm run start
+yarn start
 
 # watch mode
-npm run start:dev
+yarn start:dev
 
 # production mode
-npm run start:prod
+yarn start:prod
 ```
 
 ## Test
@@ -54,20 +34,20 @@ To run tests in the repo, please use these commands:
 
 ```bash
 # unit tests
-npm run test
+yarn test
 
 # e2e tests
-npm run test:e2e
+yarn test:e2e
 
 # test coverage
-npm run test:cov
+yarn test:cov
 ```
 
 # Deployment
 We have multiple options for deploying your app to our Kubernetes cluster.
 
 ## Pipelines
-TODO
+Same as elsewhere (TODO point to relevant docs).
 
 ## Manual
 You can use our `bratiska-cli`, which takes care of deploying the app.
@@ -77,38 +57,12 @@ You can use our `bratiska-cli`, which takes care of deploying the app.
     yarn global add bratislava/bratiska-cli
     ```
 
-2. then go to folder of `/strapi` or `/next` and run just this command:
+2. then
     ```bash
     bartiska-cli deploy
     ```
 
 That`s all, everything should run automatically and if not you will be notified. You can also check [user guide of bratiska-cli](https://github.com/bratislava/bratiska-cli/blob/master/README.md).
-
-# Development
-
-## Prisma
-- To initialize Prisma for the first time, you can run:
-  (but it deletes old Prisma schema if it is available there)
-
-```bash
-prisma init
-```
-
-If you have some change in the schema.prisma, run:
-
-```bash
-npx prisma db push
-```
-This will update the structure. But if you have some existing data in db, you need to create migrations to propagate changes properly.
-
-```bash
-npx prisma migrate dev --name init
-```
-This Prisma migrates dev command generates SQL files and directly runs them against the database. In this case, the following migration files were created in the existing Prisma directory:
-
-We are using Prisma schema with the name `schema.deployment.prisma`, which has specified build target to our Kubernetes server for deployment.
-
-
 
 ## Docker
 
@@ -129,13 +83,13 @@ You can manually create a local image and push it to the repository if you are i
 You can decide which image you would like to build (dev or production) based on your preference.
 
 ```bash
-docker build -t harbor.bratislava.sk/standalone/nest-prisma-template:manual --target prod . 
+docker build -t harbor.bratislava.sk/standalone/nest-ginis-proxy:manual --target prod . 
 ```
 
 Push image to harbor
 
 ```bash
-docker push harbor.bratislava.sk/standalone/nest-prisma-template:manual
+docker push harbor.bratislava.sk/standalone/nest-ginis-proxy:manual
 ```
 
 ## Kustomize
@@ -206,20 +160,20 @@ If you already have a sealed secret in Kubernetes, you can update it with the co
 ```bash
 kubectl apply -f database.secret.yml
 ```
-Usually, you get this kind of error: `Error from server (AlreadyExists): error when creating "database.secret.yml": sealedsecrets.bitnami.com "nest-Prisma-template-database-secret" already exists`
+Usually, you get this kind of error: `Error from server (AlreadyExists): error when creating "database.secret.yml": sealedsecrets.bitnami.com "nest-ginis-proxy-database-secret" already exists`
 
 If you want to check if your secret is there, you can run this command:
 ```bash
-kubectl get secret --namespace=standalone nest-prisma-template-database-secret
+kubectl get secret --namespace=standalone nest-ginis-proxy-database-secret
 ```
 
 
 #### Database convention naming
 
-Please use our services as database name and user the project slug. In this case, we will use `nest-prisma-template`. And for passwords, use at least 16 characters long pass with random chars.
+Please use our services as database name and user the project slug. In this case, we will use `nest-ginis-proxy`. And for passwords, use at least 16 characters long pass with random chars.
 ```yml
-POSTGRES_DB: nest-prisma-template
-POSTGRES_USER: nest-prisma-template
+POSTGRES_DB: nest-ginis-proxy
+POSTGRES_USER: nest-ginis-proxy
 POSTGRES_PASSWORD: LBcdso08b&aasd(ck2*d!p
 ```
 
